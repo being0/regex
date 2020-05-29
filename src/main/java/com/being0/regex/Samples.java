@@ -13,6 +13,13 @@ public class Samples {
     private static final Pattern EXP_EXTRACTOR_PATTERN = Pattern.compile("\\$\\{([^}]+)}"); // Extract expression like ${myexp}
 
     /**
+     * Using positive look ahead technic to check password validity.
+     * The password should be between 8~50 characters including nonwords or number characters and at least one word character.
+     * Note: ^.* means start of string followed by zero or more of any character (except line break)
+     */
+    private static final Pattern PASSWORD_CHECk_PATTERN = Pattern.compile("(?=^.{8,50}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Za-z]).*$");
+
+    /*
      * Extract all parameters stating by ${ and ending by } from expIncluded string
      *
      * @param expIncluded exp string like for example "hi ${firstname} ${lastname}!"
@@ -27,6 +34,12 @@ public class Samples {
         while (matcher.find()) params.add(matcher.group(1));
 
         return params;
+    }
+
+    public static boolean isValidPassword(String password) {
+        if (password == null || password.isEmpty()) return false;
+
+        return PASSWORD_CHECk_PATTERN.matcher(password).find();
     }
 
 }
